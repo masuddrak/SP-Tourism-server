@@ -26,6 +26,22 @@ async function run() {
         // await client.connect();
         // Send a ping to confirm a successful connection
         const touristsCollection = client.db("SP-TOURISTS").collection("tourists");
+        // countrypace
+        app.get("/tourists/:country", async(req,res)=>{
+            const country=req.params.country
+            const query={country_Name: country}
+            console.log(query)
+            const cursor =await touristsCollection.find(query)
+            const result=await cursor.toArray()
+            res.send(result)
+        })
+        // get one tourists
+        app.get("/tourists/:id",async(req,res)=>{
+            const id=req.params.id
+            const query={_id:new ObjectId(id)}
+            const result =await touristsCollection.findOne(query)
+            res.send(result)
+        })
         // get all tourists plase
         app.get("/tourists",async(req,res)=>{
             const cursor = touristsCollection.find();
