@@ -26,11 +26,28 @@ async function run() {
         // await client.connect();
         // Send a ping to confirm a successful connection
         const touristsCollection = client.db("SP-TOURISTS").collection("tourists");
-        // countrypace
+        // delete place
+        app.delete("/tourists/:_id",async(req,res)=>{
+            const id=req.params._id
+            const query={_id:new ObjectId(id)}
+            const result=await touristsCollection.deleteOne(query)
+            res.send(result)
+            console.log(id)
+        })
+        // user places
+        app.get("/tourists/:user", async(req,res)=>{
+            const userEmail=req.params.user
+            const query={email: userEmail}
+        
+            const cursor =await touristsCollection.find(query)
+            const result=await cursor.toArray()
+            res.send(result)
+        })
+        // country places
         app.get("/tourists/:country", async(req,res)=>{
             const country=req.params.country
             const query={country_Name: country}
-            console.log(query)
+     
             const cursor =await touristsCollection.find(query)
             const result=await cursor.toArray()
             res.send(result)
