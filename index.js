@@ -26,34 +26,63 @@ async function run() {
         // await client.connect();
         // Send a ping to confirm a successful connection
         const touristsCollection = client.db("SP-TOURISTS").collection("tourists");
+        const countryCollection = client.db("SP-TOURISTS").collection("countries");
+        // all
+        app.get("/countries",async(req,res)=>{
+            const cursor = countryCollection.find();
+            const result=await cursor.toArray()
+            res.send(result)
+        })
+        // update place
+        app.put("/touristsUpdate/:id",async(req,res)=>{
+            const id=req.params.id
+            const item=req.body
+            const query={_id:new ObjectId(id)}
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    image:item.image,
+                    tourists_spot_name:item.tourists_spot_name,
+                    country_Name:item.country_Name,
+                    location:item.location,
+                    description:item.description,
+                    average_cost:item.average_cost,
+                    seasonality:item.seasonality,
+                    travel_time:item.travel_time,
+                    totaVisitorsPerYear:item.totaVisitorsPerYear,
+                    name:item.name,
+                    email:item.email,
+                },
+              };
+              const result = await touristsCollection.updateOne(query, updateDoc, options)
+              res.send(result)
+        })
         // delete place
         app.delete("/tourists/:_id",async(req,res)=>{
             const id=req.params._id
             const query={_id:new ObjectId(id)}
             const result=await touristsCollection.deleteOne(query)
             res.send(result)
-            console.log(id)
         })
         // user places
         app.get("/tourists/:user", async(req,res)=>{
             const userEmail=req.params.user
             const query={email: userEmail}
-        
             const cursor =await touristsCollection.find(query)
             const result=await cursor.toArray()
             res.send(result)
         })
         // country places
-        app.get("/tourists/:country", async(req,res)=>{
+        app.get("/countryplace/:country", async(req,res)=>{
             const country=req.params.country
             const query={country_Name: country}
-     
+                console.log(country)
             const cursor =await touristsCollection.find(query)
             const result=await cursor.toArray()
             res.send(result)
         })
         // get one tourists
-        app.get("/tourists/:id",async(req,res)=>{
+        app.get("/touristsDetails/:id",async(req,res)=>{
             const id=req.params.id
             const query={_id:new ObjectId(id)}
             const result =await touristsCollection.findOne(query)
