@@ -27,6 +27,7 @@ async function run() {
         // Send a ping to confirm a successful connection
         const touristsCollection = client.db("SP-TOURISTS").collection("tourists");
         const countryCollection = client.db("SP-TOURISTS").collection("countries");
+        
         // all
         app.get("/countries",async(req,res)=>{
             const cursor = countryCollection.find();
