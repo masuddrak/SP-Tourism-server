@@ -35,7 +35,7 @@ async function run() {
             res.send(result)
         })
         // update place
-        app.put("/touristsUpdate/:id",async(req,res)=>{
+        app.patch("/touristsUpdate/:id",async(req,res)=>{
             const id=req.params.id
             const item=req.body
             const query={_id:new ObjectId(id)}
