@@ -58,7 +58,7 @@ async function run() {
               const result = await touristsCollection.updateOne(query, updateDoc, options)
               res.send(result)
         })
-        // delete place
+        // delete spot place 
         app.delete("/tourists/:_id",async(req,res)=>{
             const id=req.params._id
             const query={_id:new ObjectId(id)}
